@@ -1,0 +1,38 @@
+import std/string::String
+
+fn push_bar(r#: String, val: i32, max: i32) -> void {
+    auto lv# = 0
+    if max > 0 { lv = val * 7 / max }
+    else { lv = 0 }
+    if lv >= 7 { r#.push_str("\xe2\x96\x88") }
+    else if lv >= 6 { r#.push_str("\xe2\x96\x87") }
+    else if lv >= 5 { r#.push_str("\xe2\x96\x86") }
+    else if lv >= 4 { r#.push_str("\xe2\x96\x85") }
+    else if lv >= 3 { r#.push_str("\xe2\x96\x84") }
+    else if lv >= 2 { r#.push_str("\xe2\x96\x83") }
+    else if lv >= 1 { r#.push_str("\xe2\x96\x82") }
+    else { r#.push_str("\xe2\x96\x81") }
+}
+
+pub fn sparkline(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) -> String {
+    auto mx# = a
+    if b > mx { mx = b }
+    if c > mx { mx = c }
+    if d > mx { mx = d }
+    if e > mx { mx = e }
+    if f > mx { mx = f }
+    if g > mx { mx = g }
+    if h > mx { mx = h }
+    
+    auto r# = String::from("\x1b[36m")
+    push_bar(r, a, mx)
+    push_bar(r, b, mx)
+    push_bar(r, c, mx)
+    push_bar(r, d, mx)
+    push_bar(r, e, mx)
+    push_bar(r, f, mx)
+    push_bar(r, g, mx)
+    push_bar(r, h, mx)
+    r#.push_str("\x1b[0m")
+    return cede r
+}
