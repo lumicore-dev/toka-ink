@@ -1,24 +1,9 @@
-// toka-colors: pure str constants using v"..." syntax
-pub const red:     str = v"\x1b[31m"
-pub const green:   str = v"\x1b[32m"
-pub const yellow:  str = v"\x1b[33m"
-pub const blue:    str = v"\x1b[34m"
-pub const magenta: str = v"\x1b[35m"
-pub const cyan:    str = v"\x1b[36m"
-pub const white:   str = v"\x1b[37m"
-pub const black:   str = v"\x1b[30m"
-
-pub const bright_red:   str = v"\x1b[91m"
-pub const bright_green: str = v"\x1b[92m"
-pub const bright_blue:  str = v"\x1b[94m"
-
-pub const bg_red:   str = v"\x1b[41m"
-pub const bg_green: str = v"\x1b[42m"
-pub const bg_blue:  str = v"\x1b[44m"
-
-pub const bold:       str = v"\x1b[1m"
-pub const dim:        str = v"\x1b[2m"
-pub const italic:     str = v"\x1b[3m"
-pub const underline:  str = v"\x1b[4m"
-pub const reverse:    str = v"\x1b[7m"
-pub const reset:      str = v"\x1b[0m"
+import std/string::String
+pub fn red()     -> String { return String::from("\x1b[31m") }
+pub fn green()   -> String { return String::from("\x1b[32m") }
+pub fn yellow()  -> String { return String::from("\x1b[33m") }
+pub fn blue()    -> String { return String::from("\x1b[34m") }
+pub fn cyan()    -> String { return String::from("\x1b[36m") }
+pub fn bold()    -> String { return String::from("\x1b[1m") }
+pub fn dim()     -> String { return String::from("\x1b[2m") }
+pub fn reset()   -> String { return String::from("\x1b[0m") }
