@@ -7,11 +7,19 @@ import lib/toka_box/main::{info_box, success_box, error_box}
 import lib/toka_progress/main::{render}
 import lib/toka_spinner/main::{spin}
 import lib/toka_table/main::{render_table}
+import lib/toka_badge/main::{info_badge, success_badge, warn_badge, error_badge}
 
 pub fn main() -> i32 {
     println("\x1b[1;36m╔══════════════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v1.6.0\x1b[0m             \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v1.7.0\x1b[0m             \x1b[1;36m║\x1b[0m")
     println("\x1b[1;36m╚══════════════════════════════╝\x1b[0m\n")
+    
+    println("\x1b[32m  Badges\x1b[0m")
+    print_line(cede info_badge(String::from("Server listening on :8080")))
+    print_line(cede success_badge(String::from("Database migrated")))
+    print_line(cede warn_badge(String::from("Disk usage at 85%")))
+    print_line(cede error_badge(String::from("Connection timeout")))
+    println("")
     
     println("\x1b[32m  System Monitor\x1b[0m\n")
     print_line(cede bar(String::from("CPU"),  92))

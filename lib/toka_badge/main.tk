@@ -1,0 +1,31 @@
+// toka_badge - Colored status badges
+// Lightweight label + message tags for CLI output.
+// Usage:
+//   print_line(cede info_badge(String::from("Server started")))
+//   print_line(cede error_badge(String::from("Connection refused")))
+
+import std/string::String
+
+fn badge(*color: char, *tag: char, text: String) -> String {
+    auto r# = String::from(*color)
+    r#.push_str(*tag)
+    r#.push_str("\x1b[0m ")
+    r#.push_str(text.c_str())
+    return cede r
+}
+
+pub fn info_badge(text: String) -> String {
+    return cede badge("\x1b[1;34m", "[INFO]", text)
+}
+
+pub fn success_badge(text: String) -> String {
+    return cede badge("\x1b[1;32m", "[ OK ]", text)
+}
+
+pub fn warn_badge(text: String) -> String {
+    return cede badge("\x1b[1;33m", "[WARN]", text)
+}
+
+pub fn error_badge(text: String) -> String {
+    return cede badge("\x1b[1;31m", "[FAIL]", text)
+}
