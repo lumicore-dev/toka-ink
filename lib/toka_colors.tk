@@ -1,0 +1,46 @@
+import std/string::{String}
+
+pub fn red(text: String) -> String {
+    auto r# = String::from("\x1b[31m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn green(text: String) -> String {
+    auto r# = String::from("\x1b[32m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn yellow(text: String) -> String {
+    auto r# = String::from("\x1b[33m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn blue(text: String) -> String {
+    auto r# = String::from("\x1b[34m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn magenta(text: String) -> String {
+    auto r# = String::from("\x1b[35m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn cyan(text: String) -> String {
+    auto r# = String::from("\x1b[36m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn bold(text: String) -> String {
+    auto r# = String::from("\x1b[1m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn bold_red(text: String) -> String {
+    auto r# = String::from("\x1b[1;31m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn bold_green(text: String) -> String {
+    auto r# = String::from("\x1b[1;32m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn bg_red(text: String) -> String {
+    auto r# = String::from("\x1b[41m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}
+pub fn bg_green(text: String) -> String {
+    auto r# = String::from("\x1b[42m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m"); return cede r
+}

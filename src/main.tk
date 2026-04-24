@@ -1,0 +1,19 @@
+import std/io::{print_line}
+import lib/toka_colors::{red, green, yellow, blue, bold_red, bold_green}
+import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
+import std/string::{String}
+
+pub fn main() -> i32 {
+    print_line(cede bold_green(String::from("  tokalibs v0.1.0")))
+    print_line(cede green(String::from("  --- Colors ---")))
+    print_line(cede red(String::from("  Red")))
+    print_line(cede green(String::from("  Green")))
+    print_line(cede blue(String::from("  Blue")))
+    
+    print_line(cede green(String::from("  --- Boxes ---")))
+    print_line(cede info_box(String::from("Server started on port 8080")))
+    print_line(cede success_box(String::from("All tests passed")))
+    print_line(cede warn_box(String::from("Disk space: 2GB left")))
+    print_line(cede error_box(String::from("Connection timeout")))
+    return 0
+}
