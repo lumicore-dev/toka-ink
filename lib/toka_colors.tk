@@ -1,25 +1,27 @@
-// toka-colors: ANSI terminal colors
-pub const black:   str = "\x1b[30m"
-pub const red:     str = "\x1b[31m"
-pub const green:   str = "\x1b[32m"
-pub const yellow:  str = "\x1b[33m"
-pub const blue:    str = "\x1b[34m"
-pub const magenta: str = "\x1b[35m"
-pub const cyan:    str = "\x1b[36m"
-pub const white:   str = "\x1b[37m"
+import std/string::String
 
-pub const bright_red:   str = "\x1b[91m"
-pub const bright_green: str = "\x1b[92m"
-pub const bright_blue:  str = "\x1b[94m"
-
-pub const bg_red:   str = "\x1b[41m"
-pub const bg_green: str = "\x1b[42m"
-pub const bg_blue:  str = "\x1b[44m"
-pub const bg_yellow:str = "\x1b[43m"
-
-pub const bold:       str = "\x1b[1m"
-pub const dim:        str = "\x1b[2m"
-pub const italic:     str = "\x1b[3m"
-pub const underline:  str = "\x1b[4m"
-pub const reverse:    str = "\x1b[7m"
-pub const reset:      str = "\x1b[0m"
+pub fn red(text: String) -> String {
+    auto r# = String::from("\x1b[31m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m")
+    return cede r
+}
+pub fn green(text: String) -> String {
+    auto r# = String::from("\x1b[32m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m")
+    return cede r
+}
+pub fn yellow(text: String) -> String {
+    auto r# = String::from("\x1b[33m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m")
+    return cede r
+}
+pub fn blue(text: String) -> String {
+    auto r# = String::from("\x1b[34m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m")
+    return cede r
+}
+pub fn bold(text: String) -> String {
+    auto r# = String::from("\x1b[1m")
+    r#.push_str(text.c_str()); r#.push_str("\x1b[0m")
+    return cede r
+}

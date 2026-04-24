@@ -2,24 +2,21 @@
 
 A monorepo of Toka libraries.
 
-## toka-colors
+## Libraries
 
+### toka-colors — Colorize text
 ```toka
-import lib/toka_colors::{red, green, blue, bold, dim, reset}
-println("{}Success!{}", green, reset)
+import lib/toka_colors::{red, green, yellow, blue, bold}
+print_line(cede green(String::from("Success!")))
 ```
 
-## toka-box
-
+### toka-box — Info boxes
 ```toka
 import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
-import std/string::String
-
 print_line(cede info_box(String::from("Server started")))
 ```
 
-## Run
-
+## Run demo
 ```bash
 toka run
 ```
