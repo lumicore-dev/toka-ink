@@ -5,25 +5,22 @@ A monorepo of Toka libraries.
 ## Libraries
 
 ### toka-colors
-ANSI terminal color helpers.
-
 ```toka
-import lib/toka_colors::{red, green, yellow, blue, bold_red, bold_green}
+import lib/toka_colors::{red, green, blue, bold, reset}
+println("{}{}Hello{}", bold, green, reset)
 ```
 
 ### toka-box
-Colored information boxes.
-
 ```toka
-import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
+import lib/toka_box/main::{info_box, success_box}
+print_line(cede info_box(String::from("Server started")))
 ```
 
-## Usage
+## Run
 
 ```bash
 toka run
 ```
 
 ## License
-
 Apache-2.0

@@ -1,4 +1,4 @@
-import std/string::{String}
+import std/string::String
 
 fn hline(len: i32) -> String {
     auto r# = String::from("")
@@ -12,15 +12,12 @@ fn box(text: String, code: str) -> String {
     auto l# = t#.len() as i32 + 4
     auto c# = String::from(code)
     auto r# = String::from("")
-    
     r#.push_str("\x1b["); r#.push_str(c#.c_str()); r#.push_str("m")
     r#.push_str("\xe2\x95\x94"); r#.push_str(cede hline(l).c_str())
     r#.push_str("\xe2\x95\x97\x1b[0m\n")
-    
     r#.push_str("\x1b["); r#.push_str(c#.c_str()); r#.push_str("m")
     r#.push_str("\xe2\x95\x91  "); r#.push_str(t#.c_str())
     r#.push_str("  \xe2\x95\x91\x1b[0m\n")
-    
     r#.push_str("\x1b["); r#.push_str(c#.c_str()); r#.push_str("m")
     r#.push_str("\xe2\x95\x9a"); r#.push_str(cede hline(l).c_str())
     r#.push_str("\xe2\x95\x9d\x1b[0m")
