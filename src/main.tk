@@ -1,12 +1,13 @@
 import std/io::{print, println, print_line}
 import std/string::String
+import std/task::{sleep}
 import lib/toka_colors::{red, green, yellow, blue, bold}
 import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
 import lib/toka_progress/main::{render}
 import lib/toka_spinner/main::{spin}
 
 pub fn main() -> i32 {
-    print_line(cede bold(String::from("  === tokalibs v0.6.0 ===")))
+    print_line(cede bold(String::from("  === tokalibs v0.7.0 ===")))
     
     // Colors
     print_line(cede green(String::from("  --- Colors ---")))
@@ -22,25 +23,27 @@ pub fn main() -> i32 {
     print_line(cede warn_box(String::from("Disk space: 2GB left")))
     print_line(cede error_box(String::from("Connection timeout")))
     
-    // Progress
+    // Progress (animated!)
     print_line(cede green(String::from("  --- Progress ---")))
     auto i# = 0
     while i <= 100 {
         print(cede render(i))
-        i = i + 10
+        sleep(80)
+        i = i + 5
     }
     print(String::from("\n"))
-    print_line(cede green(String::from("  Done!")))
+    print_line(cede bold(String::from("  Complete!")))
     
-    // Spinner demo (4 frames)
+    // Spinner (animated!)
     print_line(cede green(String::from("  --- Spinner ---")))
     auto s# = 0
-    while s < 8 {
+    while s < 20 {
         print(cede spin(s))
+        sleep(100)
         s = s + 1
     }
     print(String::from("\n"))
-    print_line(cede bold(String::from("  Spinner done!")))
+    print_line(cede bold(String::from("  Done!")))
     
     return 0
 }
