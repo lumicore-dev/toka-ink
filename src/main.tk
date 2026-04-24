@@ -6,8 +6,15 @@ import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
 import lib/toka_progress/main::{render}
 import lib/toka_spinner/main::{spin}
 
+// print + flush for real-time animation
+fn pflush(s: String) -> void {
+    print(cede s)
+    auto out = stdout()
+    out.flush()
+}
+
 pub fn main() -> i32 {
-    print_line(cede bold(String::from("  === tokalibs v0.7.0 ===")))
+    print_line(cede bold(String::from("  === tokalibs v0.8.0 ===")))
     
     // Colors
     print_line(cede green(String::from("  --- Colors ---")))
@@ -23,23 +30,23 @@ pub fn main() -> i32 {
     print_line(cede warn_box(String::from("Disk space: 2GB left")))
     print_line(cede error_box(String::from("Connection timeout")))
     
-    // Progress (animated!)
+    // Animated progress
     print_line(cede green(String::from("  --- Progress ---")))
     auto i# = 0
     while i <= 100 {
-        print(cede render(i))
-        sleep(80)
-        i = i + 5
+        pflush(render(i))
+        sleep(100)
+        i = i + 2
     }
     print(String::from("\n"))
     print_line(cede bold(String::from("  Complete!")))
     
-    // Spinner (animated!)
+    // Animated spinner
     print_line(cede green(String::from("  --- Spinner ---")))
     auto s# = 0
-    while s < 20 {
-        print(cede spin(s))
-        sleep(100)
+    while s < 30 {
+        pflush(spin(s))
+        sleep(120)
         s = s + 1
     }
     print(String::from("\n"))
