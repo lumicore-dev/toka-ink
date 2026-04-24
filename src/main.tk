@@ -9,10 +9,11 @@ import lib/toka_spinner/main::{spin}
 import lib/toka_table/main::{render_table}
 import lib/toka_badge/main::{info_badge, success_badge, warn_badge, error_badge}
 import lib/toka_banner/main::{banner, success_banner, warn_banner, error_banner}
+import lib/toka_tree/main::{render_tree}
 
 pub fn main() -> i32 {
     println("\x1b[1;36m╔══════════════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v1.8.0\x1b[0m             \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v1.9.0\x1b[0m             \x1b[1;36m║\x1b[0m")
     println("\x1b[1;36m╚══════════════════════════════╝\x1b[0m\n")
     
     println("\x1b[32m  Badges\x1b[0m")
@@ -23,10 +24,15 @@ pub fn main() -> i32 {
     println("")
     
     println("\x1b[32m  Banners\x1b[0m")
-    print_line(cede banner(String::from("Deployment v2.3.1")))
+    print_line(cede banner(String::from("Deployment")))
     print_line(cede success_banner(String::from("All systems operational")))
     print_line(cede warn_banner(String::from("Certificate expiring")))
     print_line(cede error_banner(String::from("Service unavailable")))
+    println("")
+
+    println("\x1b[32m  Tree\x1b[0m")
+    auto tree = String::from("toka-ink/\n>src/\n>>main.tk\n>lib/\n>>toka_chart/\n>>>main.tk\n>>toka_sparkline/\n>>>main.tk\n>>toka_box/\n>>>main.tk\n>>toka_table/\n>>>main.tk\n>>toka_badge/\n>>>main.tk\n>>toka_banner/\n>>>main.tk\n>>toka_tree/\n>>>main.tk\n>Project.tk")
+    print_line(cede render_tree(tree))
     println("")
     
     println("\x1b[32m  System Monitor\x1b[0m\n")

@@ -1,0 +1,158 @@
+// toka_tree - Tree view renderer
+// Render hierarchical data with box-drawing tree connectors.
+// Input format: each line = one node, `>` prefix = depth level
+//
+// Usage:
+//   auto data = String::from("src/\n>main.tk\n>utils/\n>>helper.tk\n>>config.tk\n>lib/\n>>core.tk")
+//   print_line(cede render_tree(data))
+
+import std/string::String
+
+fn count_lines(s: String) -> i32 {
+    if s.len() == 0 { return 0 }
+    auto cnt# = 1
+    unsafe {
+        auto *buf = s.c_str() as *[char]
+        auto len = s.len() as i32
+        auto i# = 0
+        while i < len {
+            if buf[i] == 10 as char { cnt = cnt + 1 }
+            i = i + 1
+        }
+    }
+    return cnt
+}
+
+fn line_at(s: String, idx: i32) -> String {
+    auto iter# = s.split(10)
+    auto i# = 0
+    while !iter.is_done() {
+        auto val = iter#.next()
+        if i == idx { return val }
+        i = i + 1
+    }
+    return String::from("")
+}
+
+fn node_depth(line: String) -> i32 {
+    auto d# = 0
+    unsafe {
+        auto *buf = line.c_str() as *[char]
+        auto len = line.len() as i32
+        auto i# = 0
+        while i < len {
+            if buf[i] == 62 as char { d = d + 1 }
+            else { break }
+            i = i + 1
+        }
+    }
+    return d
+}
+
+fn node_name(line: String) -> String {
+    unsafe {
+        auto *buf = line.c_str() as *[char]
+        auto len = line.len() as i32
+        auto start# = 0
+        while start < len {
+            if buf[start] == 62 as char { start = start + 1 }
+            else { break }
+        }
+        if start >= len { return String::from("") }
+        return cede line.substring(start as u64, len as u64)
+    }
+}
+
+fn char_at(s: String, idx: i32) -> i32 {
+    if idx >= s.len() as i32 { return -1 }
+    unsafe {
+        auto *buf = s.c_str() as *[char]
+        return buf[idx] as i32
+    }
+}
+
+fn repeat_str(*s: char, n: i32) -> String {
+    auto r# = String::from("")
+    auto i# = 0
+    while i < n {
+        r#.push_str(*s)
+        i = i + 1
+    }
+    return cede r
+}
+
+pub fn render_tree(data: String) -> String {
+    if data.len() == 0 { return String::from("") }
+
+    auto result# = String::from("")
+    auto total = count_lines(data)
+    // flags[i] = '1' if depth i still has unrendered siblings after current node
+    auto flags# = String::from("")
+
+    auto i# = 0
+    while i < total {
+        auto line = line_at(data, i)
+        if line.len() == 0 { i = i + 1; continue }
+
+        auto depth = node_depth(line)
+        auto name = node_name(line)
+
+        // Look ahead: is this the last sibling at this depth?
+        auto is_last# = 1
+        auto j# = i + 1
+        while j < total {
+            auto nl = line_at(data, j)
+            if nl.len() == 0 { j = j + 1; continue }
+            auto nd = node_depth(nl)
+            if nd == depth { is_last = 0; break }
+            if nd < depth { break }
+            j = j + 1
+        }
+
+        // Trim flags to keep only levels < depth (deeper levels are stale)
+        auto new_flags# = String::from("")
+        auto k# = 0
+        while k < depth && k < flags.len() as i32 {
+            auto ch = char_at(flags, k)
+            if ch == 49 { new_flags#.push_str("1") }
+            else { new_flags#.push_str("0") }
+            k = k + 1
+        }
+        flags = cede new_flags
+
+        // Add current level's flag
+        if is_last == 1 { flags#.push_str("0") }
+        else { flags#.push_str("1") }
+
+        // Build indentation prefix from ancestor flags
+        auto prefix# = String::from("")
+        k = 0
+        while k < depth {
+            if k < flags.len() as i32 {
+                auto ch = char_at(flags, k)
+                if ch == 49 { prefix#.push_str("\xe2\x94\x82   ") }  // │
+                else { prefix#.push_str("    ") }
+            } else {
+                prefix#.push_str("    ")
+            }
+            k = k + 1
+        }
+
+        // Add node connector
+        if depth > 0 {
+            if is_last == 1 {
+                prefix#.push_str("\xe2\x94\x94\xe2\x94\x80\xe2\x94\x80 ")  // └──
+            } else {
+                prefix#.push_str("\xe2\x94\x9c\xe2\x94\x80\xe2\x94\x80 ")  // ├──
+            }
+        }
+
+        result#.push_str(prefix.c_str())
+        result#.push_str(name.c_str())
+        result#.push_str("\n")
+
+        i = i + 1
+    }
+
+    return cede result
+}
