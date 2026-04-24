@@ -1,5 +1,26 @@
-import std/io::print
+import std/io::{print, println}
 import std/string::String
+import lib/toka_colors::{reset}
+
+pub fn render(pct: i32) -> String {
+    auto fill = pct * 20 / 100
+    auto rest = 20 - fill
+    
+    auto r# = String::from("")
+    r#.push_str(v"\x0d")
+    r#.push_str(v"\x1b[32m")
+    auto i# = 0
+    while i < fill { r#.push_str("="); i = i + 1 }
+    r#.push_str(v"\x1b[90m")
+    i = 0
+    while i < rest { r#.push_str("."); i = i + 1 }
+    r#.push_str(v"\x1b[0m  ")
+    if pct < 100 { r#.push_str(" ") }
+    if pct < 10 { r#.push_str(" ") }
+    r#.push_str(cede int_str(pct).c_str())
+    r#.push_str("%")
+    return cede r
+}
 
 fn digit(d: i32) -> String {
     auto r# = String::from("")
@@ -18,44 +39,11 @@ fn digit(d: i32) -> String {
 
 fn int_str(n: i32) -> String {
     auto r# = String::from("")
-    if n >= 100 {
-        r#.push_str(cede digit(n / 100).c_str())
-        r#.push_str(cede digit((n / 10) % 10).c_str())
-        r#.push_str(cede digit(n % 10).c_str())
-    } else if n >= 10 {
+    if n >= 10 {
         r#.push_str(cede digit(n / 10).c_str())
         r#.push_str(cede digit(n % 10).c_str())
     } else {
         r#.push_str(cede digit(n).c_str())
     }
-    return cede r
-}
-
-pub fn render(pct: i32) -> String {
-    auto fill = pct * 20 / 100
-    auto rest = 20 - fill
-    
-    auto r# = String::from("\x0d\x1b[32m")
-    
-    // filled part - inline loop with direct push
-    auto i# = 0
-    while i < fill {
-        r#.push_str("=")
-        i = i + 1
-    }
-    
-    // empty part
-    r#.push_str("\x1b[90m")
-    i = 0
-    while i < rest {
-        r#.push_str(".")
-        i = i + 1
-    }
-    
-    r#.push_str("\x1b[0m  ")
-    if pct < 100 { r#.push_str(" ") }
-    if pct < 10 { r#.push_str(" ") }
-    r#.push_str(cede int_str(pct).c_str())
-    r#.push_str("%")
     return cede r
 }

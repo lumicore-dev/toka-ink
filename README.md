@@ -1,19 +1,29 @@
 # tokalibs
 
-A monorepo of Toka libraries.
+A monorepo of Toka third-party libraries.
 
 ## Libraries
 
-| Library | File | Description |
-|---------|------|-------------|
-| toka-colors | `lib/toka_colors.tk` | Colorize text |
-| toka-box | `lib/toka_box/main.tk` | Info boxes with Unicode borders |
-| toka-progress | `lib/toka_progress/main.tk` | Progress bars |
-| toka-spinner | `lib/toka_spinner/main.tk` | Animated spinners |
-| toka-banner | `lib/toka_banner/main.tk` | Headers and section dividers |
-| toka-prompt | `lib/toka_prompt/main.tk` | Interactive confirm prompts |
+| Library | Description |
+|---------|-------------|
+| toka-colors | ANSI color constants - `println("{}{}text{}", red, green, reset)` |
+| toka-box | Info boxes with Unicode borders |
+| toka-progress | Progress bars with percentage |
+| toka-spinner | Animated spinner |
+| toka-banner | Section headers and dividers |
+| toka-prompt | Interactive prompts |
 
-## Demo
+## Key feature
+
+Since Toka v0.9.0, `v"..."` string literals support `\x` escape sequences,
+enabling clean `const str` color constants:
+
+```toka
+import lib/toka_colors::{red, green, bold, reset}
+println("{}{}Hello{}", bold, green, reset)
+```
+
+## Run
 
 ```bash
 toka run
