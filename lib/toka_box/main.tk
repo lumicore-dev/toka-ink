@@ -6,23 +6,58 @@ fn hline(len: i32) -> String {
     return cede r
 }
 
-fn box(text: String, code: str) -> String {
+pub fn info_box(text: String) -> String {
     auto t# = String::from(text.c_str()); auto l# = t#.len() as i32 + 4
-    auto c# = String::from(code)
-    auto r# = String::from("")
-    r#.push_str("\x1b["); r#.push_str(c#.c_str()); r#.push_str("m")
-    r#.push_str("\xe2\x95\x94"); r#.push_str(cede hline(l).c_str())
+    auto r# = String::from("\x1b[1;34m\xe2\x95\x94")
+    r#.push_str(cede hline(l).c_str())
     r#.push_str("\xe2\x95\x97\x1b[0m\n")
-    r#.push_str("\x1b["); r#.push_str(c#.c_str()); r#.push_str("m")
-    r#.push_str("\xe2\x95\x91  "); r#.push_str(t#.c_str())
+    r#.push_str("\x1b[1;34m\xe2\x95\x91  ")
+    r#.push_str(t#.c_str())
     r#.push_str("  \xe2\x95\x91\x1b[0m\n")
-    r#.push_str("\x1b["); r#.push_str(c#.c_str()); r#.push_str("m")
-    r#.push_str("\xe2\x95\x9a"); r#.push_str(cede hline(l).c_str())
+    r#.push_str("\x1b[1;34m\xe2\x95\x9a")
+    r#.push_str(cede hline(l).c_str())
     r#.push_str("\xe2\x95\x9d\x1b[0m")
     return cede r
 }
 
-pub fn info_box(text: String) -> String { return cede box(text, "1;34") }
-pub fn success_box(text: String) -> String { return cede box(text, "1;32") }
-pub fn warn_box(text: String) -> String { return cede box(text, "1;33") }
-pub fn error_box(text: String) -> String { return cede box(text, "1;31") }
+pub fn success_box(text: String) -> String {
+    auto t# = String::from(text.c_str()); auto l# = t#.len() as i32 + 4
+    auto r# = String::from("\x1b[1;32m\xe2\x95\x94")
+    r#.push_str(cede hline(l).c_str())
+    r#.push_str("\xe2\x95\x97\x1b[0m\n")
+    r#.push_str("\x1b[1;32m\xe2\x95\x91  ")
+    r#.push_str(t#.c_str())
+    r#.push_str("  \xe2\x95\x91\x1b[0m\n")
+    r#.push_str("\x1b[1;32m\xe2\x95\x9a")
+    r#.push_str(cede hline(l).c_str())
+    r#.push_str("\xe2\x95\x9d\x1b[0m")
+    return cede r
+}
+
+pub fn warn_box(text: String) -> String {
+    auto t# = String::from(text.c_str()); auto l# = t#.len() as i32 + 4
+    auto r# = String::from("\x1b[1;33m\xe2\x95\x94")
+    r#.push_str(cede hline(l).c_str())
+    r#.push_str("\xe2\x95\x97\x1b[0m\n")
+    r#.push_str("\x1b[1;33m\xe2\x95\x91  ")
+    r#.push_str(t#.c_str())
+    r#.push_str("  \xe2\x95\x91\x1b[0m\n")
+    r#.push_str("\x1b[1;33m\xe2\x95\x9a")
+    r#.push_str(cede hline(l).c_str())
+    r#.push_str("\xe2\x95\x9d\x1b[0m")
+    return cede r
+}
+
+pub fn error_box(text: String) -> String {
+    auto t# = String::from(text.c_str()); auto l# = t#.len() as i32 + 4
+    auto r# = String::from("\x1b[1;31m\xe2\x95\x94")
+    r#.push_str(cede hline(l).c_str())
+    r#.push_str("\xe2\x95\x97\x1b[0m\n")
+    r#.push_str("\x1b[1;31m\xe2\x95\x91  ")
+    r#.push_str(t#.c_str())
+    r#.push_str("  \xe2\x95\x91\x1b[0m\n")
+    r#.push_str("\x1b[1;31m\xe2\x95\x9a")
+    r#.push_str(cede hline(l).c_str())
+    r#.push_str("\xe2\x95\x9d\x1b[0m")
+    return cede r
+}
