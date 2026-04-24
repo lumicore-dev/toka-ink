@@ -4,25 +4,16 @@ A monorepo of Toka libraries.
 
 ## Libraries
 
-| Library | Description |
-|---------|-------------|
-| toka-colors | Colorize text with ANSI codes |
-| toka-box | Colored info boxes with Unicode borders |
-| toka-progress | Progress bars with percentage |
-| toka-spinner | Animated spinner (frames: `- \ | /`) |
+| Library | File | Description |
+|---------|------|-------------|
+| toka-colors | `lib/toka_colors.tk` | Colorize text |
+| toka-box | `lib/toka_box/main.tk` | Info boxes with Unicode borders |
+| toka-progress | `lib/toka_progress/main.tk` | Progress bars |
+| toka-spinner | `lib/toka_spinner/main.tk` | Animated spinners |
+| toka-banner | `lib/toka_banner/main.tk` | Headers and section dividers |
+| toka-prompt | `lib/toka_prompt/main.tk` | Interactive confirm prompts |
 
-## Usage
-
-```
-import lib/toka_colors::{red, green, yellow, blue, bold}
-import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
-import lib/toka_progress/main::{render}
-import lib/toka_spinner/main::{spin}
-```
-
-See `src/main.tk` for a full demo.
-
-## Run
+## Demo
 
 ```bash
 toka run

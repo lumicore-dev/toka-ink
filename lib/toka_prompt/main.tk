@@ -1,0 +1,19 @@
+import std/io::{print, println, stdin}
+import std/string::String
+
+pub fn confirm(question: String) -> bool {
+    print(cede question)
+    print(String::from(" [Y/n] "))
+    auto result = stdin().read_line()
+    auto answer = result.unwrap()
+    
+    // Check first char
+    auto raw = String::from(answer.c_str())
+    auto first = raw.c_str()
+    
+    // Simple check: empty or Y/y = true
+    if first == "" { return true }
+    if first == "Y" { return true }
+    if first == "y" { return true }
+    return false
+}
