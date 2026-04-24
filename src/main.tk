@@ -8,10 +8,11 @@ import lib/toka_progress/main::{render}
 import lib/toka_spinner/main::{spin}
 import lib/toka_table/main::{render_table}
 import lib/toka_badge/main::{info_badge, success_badge, warn_badge, error_badge}
+import lib/toka_banner/main::{banner, success_banner, warn_banner, error_banner}
 
 pub fn main() -> i32 {
     println("\x1b[1;36m╔══════════════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v1.7.0\x1b[0m             \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v1.8.0\x1b[0m             \x1b[1;36m║\x1b[0m")
     println("\x1b[1;36m╚══════════════════════════════╝\x1b[0m\n")
     
     println("\x1b[32m  Badges\x1b[0m")
@@ -19,6 +20,13 @@ pub fn main() -> i32 {
     print_line(cede success_badge(String::from("Database migrated")))
     print_line(cede warn_badge(String::from("Disk usage at 85%")))
     print_line(cede error_badge(String::from("Connection timeout")))
+    println("")
+    
+    println("\x1b[32m  Banners\x1b[0m")
+    print_line(cede banner(String::from("Deployment v2.3.1")))
+    print_line(cede success_banner(String::from("All systems operational")))
+    print_line(cede warn_banner(String::from("Certificate expiring")))
+    print_line(cede error_banner(String::from("Service unavailable")))
     println("")
     
     println("\x1b[32m  System Monitor\x1b[0m\n")

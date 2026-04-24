@@ -1,52 +1,43 @@
+// toka_banner - Section header banners with ruled lines
+// One-line banners for visually separating output sections.
+// Usage:
+//   print_line(cede banner(String::from("Deployment")))
+//   print_line(cede success_banner(String::from("All systems go")))
+
 import std/string::String
 
-pub fn header(text: String) -> String {
+fn ruled(*color: char, text: String) -> String {
+    auto MIN_W = 56
     auto t# = String::from(text.c_str())
-    auto len# = t#.len() as i32
-    
-    auto r# = String::from("\x1b[1;36m")
-    auto i# = 0
-    while i < len + 12 {
-        r#.push_str("\xe2\x94\x81")
-        i = i + 1
-    }
-    r#.push_str("\x1b[0m\n")
-    
-    r#.push_str("\x1b[1;36m\xe2\x94\x83     ")
+    auto tlen = t#.len() as i32
+    auto pad# = MIN_W - tlen - 4
+    if pad < 2 { pad = 2 }
+
+    auto r# = String::from(*color)
+    r#.push_str("\xe2\x94\x81\xe2\x94\x81\xe2\x94\x81 ")  // ━━━
     r#.push_str(t#.c_str())
-    r#.push_str("     \xe2\x94\x83\x1b[0m\n")
-    
-    r#.push_str("\x1b[1;36m")
-    i = 0
-    while i < len + 12 {
-        r#.push_str("\xe2\x94\x81")
+    r#.push_str(" ")
+    auto i# = 0
+    while i < pad {
+        r#.push_str("\xe2\x94\x81")  // ━
         i = i + 1
     }
     r#.push_str("\x1b[0m")
     return cede r
 }
 
-pub fn divider(text: String) -> String {
-    auto t# = String::from(text.c_str())
-    auto len# = t#.len() as i32
-    auto total = 44
-    auto side# = (total - len) / 2 - 2
-    if side < 2 { side = 2 }
-    
-    auto r# = String::from("\x1b[90m")
-    auto i# = 0
-    while i < side {
-        r#.push_str("\xe2\x94\x80")
-        i = i + 1
-    }
-    r#.push_str(" \x1b[0m")
-    r#.push_str(t#.c_str())
-    r#.push_str("\x1b[90m ")
-    i = 0
-    while i < side {
-        r#.push_str("\xe2\x94\x80")
-        i = i + 1
-    }
-    r#.push_str("\x1b[0m")
-    return cede r
+pub fn banner(text: String) -> String {
+    return cede ruled("\x1b[1;34m", text)
+}
+
+pub fn success_banner(text: String) -> String {
+    return cede ruled("\x1b[1;32m", text)
+}
+
+pub fn warn_banner(text: String) -> String {
+    return cede ruled("\x1b[1;33m", text)
+}
+
+pub fn error_banner(text: String) -> String {
+    return cede ruled("\x1b[1;31m", text)
 }
