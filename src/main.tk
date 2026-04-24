@@ -6,16 +6,11 @@ import lib/toka_sparkline/main::{sparkline}
 import lib/toka_box/main::{info_box, success_box, error_box}
 import lib/toka_progress/main::{render}
 import lib/toka_spinner/main::{spin}
-
-fn raw_print(s: String) -> void {
-    auto out = stdout()
-    out.write(cede s)
-    out.flush()       // ← 强制刷新缓冲区
-}
+import lib/toka_table/main::{render_table}
 
 pub fn main() -> i32 {
     println("\x1b[1;36m╔══════════════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtokalibs v1.5.3\x1b[0m             \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v1.6.0\x1b[0m             \x1b[1;36m║\x1b[0m")
     println("\x1b[1;36m╚══════════════════════════════╝\x1b[0m\n")
     
     println("\x1b[32m  System Monitor\x1b[0m\n")
@@ -31,6 +26,12 @@ pub fn main() -> i32 {
     print_line(cede info_box(String::from("Server: OK")))
     print_line(cede success_box(String::from("DB: Connected")))
     print_line(cede error_box(String::from("Disk: 2GB")))
+    println("")
+    
+    println("\x1b[32m  Table\x1b[0m")
+    auto headers = String::from("Name|Status|Uptime|Region")
+    auto rows = String::from("api-01|Online|14d 3h|us-east\ndb-02|Online|87d 12h|eu-west\ncache-03|Degraded|2d 7h|ap-south\nworker-04|Offline|0d 0h|us-west")
+    print_line(cede render_table(headers, rows))
     println("")
     
     println("\x1b[32m  Progress\x1b[0m")

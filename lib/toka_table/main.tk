@@ -1,0 +1,165 @@
+// toka_table - Terminal table renderer
+// Render pipe-delimited data into a beautiful box-drawing table.
+// Usage:
+//   auto headers = String::from("Name|Status|Uptime")
+//   auto rows = String::from("api-01|Online|14d\n db-02|Offline|2d")
+//   print_line(cede render_table(headers, rows))
+
+import std/string::String
+import core/libc::*
+
+fn count_cols(s: String, sep: i32) -> i32 {
+    if s.len() == 0 { return 0 }
+    auto cnt# = 1
+    auto i# = 0
+    auto slen = s.len() as i32
+    unsafe {
+        auto *buf = s.c_str() as *[char]
+        while i < slen {
+            if buf[i] == sep as char { cnt = cnt + 1 }
+            i = i + 1
+        }
+    }
+    return cnt
+}
+
+fn nth_col(s: String, sep: i32, n: i32) -> String {
+    auto iter# = s.split(sep)
+    auto i# = 0
+    while !iter.is_done() {
+        auto val = iter#.next().trim()
+        if i == n { return val }
+        i = i + 1
+    }
+    return String::from("")
+}
+
+fn col_max_width(rows_block: String, col_idx: i32) -> i32 {
+    auto max_w# = 0
+    auto r_iter# = rows_block.split(10)
+    while !r_iter.is_done() {
+        auto row = r_iter#.next()
+        if row.len() > 0 {
+            auto cell = nth_col(row, 124, col_idx)
+            auto clen = cell.len() as i32
+            if clen > max_w { max_w = clen }
+        }
+    }
+    return max_w
+}
+
+fn parse_int(s: String) -> i32 {
+    if s.len() == 0 { return 0 }
+    unsafe {
+        auto *buf = s.c_str() as *[char]
+        auto val# = 0
+        auto i# = 0
+        while i < s.len() as i32 {
+            val = val * 10 + (buf[i] as i32 - 48)
+            i = i + 1
+        }
+        return val
+    }
+}
+
+fn get_width(widths_buf: String, idx: i32) -> i32 {
+    return parse_int(nth_col(widths_buf, 44, idx))
+}
+
+fn repeat_str(*s: char, n: i32) -> String {
+    auto r# = String::from("")
+    auto i# = 0
+    while i < n {
+        r#.push_str(*s)
+        i = i + 1
+    }
+    return cede r
+}
+
+fn render_border(*left: char, *mid: char, *right: char, widths_buf: String, col_count: i32) -> String {
+    auto r# = String::from("\x1b[1;34m")
+    r#.push_str(*left)
+    auto ci# = 0
+    while ci < col_count {
+        r#.push_str(cede repeat_str("\xe2\x95\x90", get_width(widths_buf, ci) + 2).c_str())
+        ci = ci + 1
+        if ci < col_count { r#.push_str(*mid) }
+    }
+    r#.push_str(*right)
+    r#.push_str("\x1b[0m\n")
+    return cede r
+}
+
+pub fn render_table(headers_line: String, rows_block: String) -> String {
+    auto col_count = count_cols(headers_line, 124)
+    if col_count == 0 { return String::from("") }
+
+    // Compute column widths: comma-separated string of max(width_header, width_data)
+    auto widths_buf# = String::from("")
+    auto ci# = 0
+    while ci < col_count {
+        auto hname = nth_col(headers_line, 124, ci)
+        auto w# = hname.len() as i32
+        auto rw = col_max_width(rows_block, ci)
+        if rw > w { w = rw }
+        if ci > 0 { widths_buf#.push_str(",") }
+        widths_buf#.push_str(w.to_string().c_str())
+        ci = ci + 1
+    }
+
+    auto result# = String::from("")
+
+    // Top border: ╔══════╦══════╗
+    result#.push_str(cede render_border(
+        "\xe2\x95\x94", "\xe2\x95\xa6", "\xe2\x95\x97",
+        widths_buf, col_count
+    ).c_str())
+
+    // Header row: ║ Name ║
+    result#.push_str("\x1b[1;34m\xe2\x95\x91\x1b[0m")  // ║
+    ci = 0
+    while ci < col_count {
+        auto name = nth_col(headers_line, 124, ci)
+        auto pad = get_width(widths_buf, ci) - name.len() as i32
+        result#.push_str(" ")
+        result#.push_str(name.c_str())
+        result#.push_str(cede repeat_str(" ", pad + 1).c_str())
+        result#.push_str("\x1b[1;34m\xe2\x95\x91\x1b[0m")  // ║
+        ci = ci + 1
+    }
+    result#.push_str("\n")
+
+    // Separator: ╠══════╬══════╣
+    result#.push_str(cede render_border(
+        "\xe2\x95\xa0", "\xe2\x95\xac", "\xe2\x95\xa3",
+        widths_buf, col_count
+    ).c_str())
+
+    // Data rows
+    auto r_iter# = rows_block.split(10)
+    while !r_iter.is_done() {
+        auto row = r_iter#.next()
+        if row.len() > 0 {
+            result#.push_str("\x1b[1;34m\xe2\x95\x91\x1b[0m")  // ║
+            auto ci2# = 0
+            while ci2 < col_count {
+                auto cell = nth_col(row, 124, ci2)
+                auto pad = get_width(widths_buf, ci2) - cell.len() as i32
+                result#.push_str(" ")
+                result#.push_str(cell.c_str())
+                result#.push_str(cede repeat_str(" ", pad + 1).c_str())
+                result#.push_str("\x1b[1;34m\xe2\x95\x91\x1b[0m")  // ║
+                ci2 = ci2 + 1
+            }
+            result#.push_str("\n")
+        }
+    }
+
+    // Bottom border: ╚══════╩══════╝
+    result#.push_str(cede render_border(
+        "\xe2\x95\x9a", "\xe2\x95\xa9", "\xe2\x95\x9d",
+        widths_buf, col_count
+    ).c_str())
+
+    return cede result
+}
