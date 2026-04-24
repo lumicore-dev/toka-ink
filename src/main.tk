@@ -10,10 +10,11 @@ import lib/toka_table/main::{render_table}
 import lib/toka_badge/main::{info_badge, success_badge, warn_badge, error_badge}
 import lib/toka_banner/main::{banner, success_banner, warn_banner, error_banner}
 import lib/toka_tree/main::{render_tree}
+import lib/toka_layout/main::{columns}
 
 pub fn main() -> i32 {
     println("\x1b[1;36m╔══════════════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v1.9.0\x1b[0m             \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v2.0.0\x1b[0m             \x1b[1;36m║\x1b[0m")
     println("\x1b[1;36m╚══════════════════════════════╝\x1b[0m\n")
     
     println("\x1b[32m  Badges\x1b[0m")
@@ -33,6 +34,11 @@ pub fn main() -> i32 {
     println("\x1b[32m  Tree\x1b[0m")
     auto tree = String::from("toka-ink/\n>src/\n>>main.tk\n>lib/\n>>toka_chart/\n>>>main.tk\n>>toka_sparkline/\n>>>main.tk\n>>toka_box/\n>>>main.tk\n>>toka_table/\n>>>main.tk\n>>toka_badge/\n>>>main.tk\n>>toka_banner/\n>>>main.tk\n>>toka_tree/\n>>>main.tk\n>Project.tk")
     print_line(cede render_tree(tree))
+    println("")
+    
+    println("\x1b[32m  Columns\x1b[0m")
+    auto services = String::from("api-01\ndb-02\ncache-03\nworker-04\nweb-05\nqueue-06\nmonitor-07")
+    print_line(cede columns(services, 3))
     println("")
     
     println("\x1b[32m  System Monitor\x1b[0m\n")

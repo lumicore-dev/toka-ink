@@ -1,0 +1,100 @@
+// toka_layout - Multi-column layout renderer
+// Arrange a list of items into evenly-spaced columns.
+// Useful for listing files, services, tags in compact format.
+//
+// Usage:
+//   auto items = String::from("api-01\ndb-02\ncache-03\nworker-04\nweb-05\nqueue-06")
+//   print_line(cede columns(items, 3))
+
+import std/string::String
+
+fn count_lines(s: String) -> i32 {
+    if s.len() == 0 { return 0 }
+    auto cnt# = 1
+    unsafe {
+        auto *buf = s.c_str() as *[char]
+        auto len = s.len() as i32
+        auto i# = 0
+        while i < len {
+            if buf[i] == 10 as char { cnt = cnt + 1 }
+            i = i + 1
+        }
+    }
+    return cnt
+}
+
+fn line_at(s: String, idx: i32) -> String {
+    auto iter# = s.split(10)
+    auto i# = 0
+    while !iter.is_done() {
+        auto val = iter#.next()
+        if i == idx { return val }
+        i = i + 1
+    }
+    return String::from("")
+}
+
+fn max_width(s: String) -> i32 {
+    auto total = count_lines(s)
+    auto mw# = 0
+    auto i# = 0
+    while i < total {
+        auto line = line_at(s, i)
+        if line.len() as i32 > mw { mw = line.len() as i32 }
+        i = i + 1
+    }
+    return mw
+}
+
+fn pad_right(s: String, width: i32) -> String {
+    auto r# = String::from(s.c_str())
+    auto slen = s.len() as i32
+    auto i# = 0
+    while i < width - slen {
+        r#.push_str(" ")
+        i = i + 1
+    }
+    return cede r
+}
+
+pub fn columns(items: String, num_cols: i32) -> String {
+    auto total = count_lines(items)
+    if total == 0 { return String::from("") }
+    if num_cols <= 1 { return String::from(items.c_str()) }
+
+    // Items per column (rounded up)
+    auto per_col# = total / num_cols
+    if total % num_cols != 0 { per_col = per_col + 1 }
+
+    // Calculate max width for each column
+    auto result# = String::from("")
+    auto row# = 0
+    while row < per_col {
+        auto col# = 0
+        while col < num_cols {
+            auto idx = row + col * per_col
+            if idx < total {
+                auto item = line_at(items, idx)
+                if col > 0 { result#.push_str("  ") }
+                // Calculate this column's max width for padding
+                auto col_max# = 0
+                auto ci# = 0
+                while ci < per_col {
+                    auto ci_idx = ci + col * per_col
+                    if ci_idx < total {
+                        auto ci_item = line_at(items, ci_idx)
+                        if ci_item.len() as i32 > col_max { col_max = ci_item.len() as i32 }
+                    }
+                    ci = ci + 1
+                }
+                result#.push_str(cede pad_right(item, col_max).c_str())
+            }
+            col = col + 1
+        }
+        // Trim trailing whitespace from this row
+        result#.push_str("\n")
+        row = row + 1
+    }
+
+    return cede result
+}
