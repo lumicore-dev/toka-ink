@@ -1,0 +1,68 @@
+import std/string::{String}
+
+// Box-drawing characters
+const tl: str = "\xe2\x95\x94"  // ╔
+const tr: str = "\xe2\x95\x97"  // ╗
+const bl: str = "\xe2\x95\x9a"  // ╚
+const br: str = "\xe2\x95\x9d"  // ╝
+const hz: str = "\xe2\x95\x90"  // ═
+const vt: str = "\xe2\x95\x91"  // ║
+
+fn hline(len: i32) -> String {
+    auto result# = String::from("")
+    auto i# = 0
+    while i < len {
+        result.push_str(hz)
+        i = i + 1
+    }
+    return cede result
+}
+
+fn make_box(text: str, color_code: str) -> String {
+    auto t# = String::from(text)
+    auto len# = t.len() as i32 + 4
+    
+    auto result# = String::from("\x1b[")
+    result.push_str(color_code)
+    result.push_str("m")
+    result.push_str(tl)
+    result.push_str(cede hline(len))
+    result.push_str(tr)
+    result.push_str("\x1b[0m\n")
+    
+    result.push_str("\x1b[")
+    result.push_str(color_code)
+    result.push_str("m")
+    result.push_str(vt)
+    result.push_str("  ")
+    result.push_str(text)
+    result.push_str("  ")
+    result.push_str(vt)
+    result.push_str("\x1b[0m\n")
+    
+    result.push_str("\x1b[")
+    result.push_str(color_code)
+    result.push_str("m")
+    result.push_str(bl)
+    result.push_str(cede hline(len))
+    result.push_str(br)
+    result.push_str("\x1b[0m")
+    
+    return cede result
+}
+
+pub fn info_box(text: String) -> String {
+    return cede make_box(text.c_str(), "1;34")
+}
+
+pub fn success_box(text: String) -> String {
+    return cede make_box(text.c_str(), "1;32")
+}
+
+pub fn warn_box(text: String) -> String {
+    return cede make_box(text.c_str(), "1;33")
+}
+
+pub fn error_box(text: String) -> String {
+    return cede make_box(text.c_str(), "1;31")
+}

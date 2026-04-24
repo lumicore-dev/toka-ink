@@ -1,0 +1,25 @@
+import std/io::{print_line}
+import lib/toka_colors::{red, green, yellow, blue, magenta, cyan,
+                          bold, underline,
+                          bold_red, bold_green,
+                          bg_red, bg_green}
+import std/string::{String}
+
+pub fn main() -> i32 {
+    print_line(cede green(String::from("  OK    Green")))
+    print_line(cede red(String::from("  ERR   Red")))
+    print_line(cede yellow(String::from("  WARN  Yellow")))
+    print_line(cede blue(String::from("  INFO  Blue")))
+    print_line(cede magenta(String::from("  DEBUG Magenta")))
+    print_line(cede cyan(String::from("  TRACE Cyan")))
+    
+    print_line(cede bold(String::from("  Bold")))
+    print_line(cede underline(String::from("  Underline")))
+    print_line(cede bold_red(String::from("  Bold Red (Fatal)")))
+    print_line(cede bold_green(String::from("  Bold Green (Pass)")))
+    
+    print_line(cede bg_red(String::from("  Red BG  ")))
+    print_line(cede bg_green(String::from("  Green BG")))
+    
+    return 0
+}

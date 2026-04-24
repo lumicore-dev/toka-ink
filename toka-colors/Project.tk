@@ -1,0 +1,11 @@
+import build::{Executable, run_build}
+
+fn main() {
+    auto app = Executable(
+        name = "toka-colors",
+        version = "0.1.0",
+        src = "src/main.tk",
+        deps = String::from("")
+    )
+    run_build(app)
+}
