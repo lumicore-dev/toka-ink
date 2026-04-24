@@ -4,7 +4,7 @@ import lib/toka_colors::{red, green, yellow, blue, bold, dim, reset}
 import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
 
 pub fn main() -> i32 {
-    println("{}{}  tokalibs v0.2.0  {}", bold, green, reset)
+    println("{}{}  tokalibs v0.3.0  {}", bold, green, reset)
     println("{}  --- Colors ---{}", green, reset)
     println("{}=>{} Red   {}=>{} Green   {}=>{} Yellow   {}=>{} Blue{}", 
         dim, red, dim, green, dim, yellow, dim, blue, reset)

@@ -1,15 +1,13 @@
 import std/string::String
 
 fn hline(len: i32) -> String {
-    auto r# = String::from("")
-    auto i# = 0
+    auto r# = String::from(""); auto i# = 0
     while i < len { r#.push_str("\xe2\x95\x90"); i = i + 1 }
     return cede r
 }
 
 fn box(text: String, code: str) -> String {
-    auto t# = String::from(text.c_str())
-    auto l# = t#.len() as i32 + 4
+    auto t# = String::from(text.c_str()); auto l# = t#.len() as i32 + 4
     auto c# = String::from(code)
     auto r# = String::from("")
     r#.push_str("\x1b["); r#.push_str(c#.c_str()); r#.push_str("m")

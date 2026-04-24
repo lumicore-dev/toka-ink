@@ -2,17 +2,19 @@
 
 A monorepo of Toka libraries.
 
-## Libraries
+## toka-colors
 
-### toka-colors
 ```toka
-import lib/toka_colors::{red, green, blue, bold, reset}
-println("{}{}Hello{}", bold, green, reset)
+import lib/toka_colors::{red, green, blue, bold, dim, reset}
+println("{}Success!{}", green, reset)
 ```
 
-### toka-box
+## toka-box
+
 ```toka
-import lib/toka_box/main::{info_box, success_box}
+import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
+import std/string::String
+
 print_line(cede info_box(String::from("Server started")))
 ```
 
