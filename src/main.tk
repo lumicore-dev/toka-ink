@@ -7,7 +7,6 @@ import lib/toka_box/main::{info_box, success_box, error_box}
 import lib/toka_progress/main::{render}
 import lib/toka_spinner/main::{spin}
 
-// 不 import print 内置函数，自己写一个输出 String 不加 \n 的
 fn raw_print(s: String) -> void {
     auto out = stdout()
     out.write(cede s)
@@ -15,7 +14,7 @@ fn raw_print(s: String) -> void {
 
 pub fn main() -> i32 {
     println("\x1b[1;36m╔══════════════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtokalibs v1.5.0\x1b[0m             \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtokalibs v1.5.2\x1b[0m             \x1b[1;36m║\x1b[0m")
     println("\x1b[1;36m╚══════════════════════════════╝\x1b[0m\n")
     
     println("\x1b[32m  System Monitor\x1b[0m\n")
@@ -37,15 +36,15 @@ pub fn main() -> i32 {
     auto i# = 0
     while i <= 100 {
         raw_print(render(i))
-        sleep(15); i = i + 2
+        sleep(20); i = i + 2
     }
     println("")
     
     println("\x1b[32m  Spinner\x1b[0m")
     auto s# = 0
-    while s < 12 {
+    while s < 20 {
         raw_print(spin(s))
-        sleep(60); s = s + 1
+        sleep(120); s = s + 1    // 120ms，比之前慢一倍
     }
     println("")
     println("\x1b[1;32m  ✦ Complete! ✦\x1b[0m")
