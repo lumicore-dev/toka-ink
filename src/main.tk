@@ -1,41 +1,40 @@
 import std/io::{print, println, print_line}
 import std/string::String
-import std/task::{sleep}
+import lib/toka_chart/main::{bar}
 import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
 import lib/toka_progress/main::{render}
 import lib/toka_spinner/main::{spin}
+import std/task::{sleep}
 
 fn pflush(s: String) -> void {
     print(cede s); auto out = stdout(); out.flush()
 }
 
 pub fn main() -> i32 {
-    // 内联 ANSI - 100% 可靠
-    println("\x1b[1;36m╔══════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtokalibs v1.2.0\x1b[0m  \x1b[1;36m║\x1b[0m")
-    println("\x1b[1;36m╚══════════════════════╝\x1b[0m\n")
+    println("\x1b[1;36m╔══════════════════════════╗\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtokalibs v1.3.0\x1b[0m       \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m╚══════════════════════════╝\x1b[0m\n")
     
-    println("\x1b[32m  Colors\x1b[0m")
-    println("\x1b[31m  ● Red\x1b[0m")
-    println("\x1b[32m  ● Green\x1b[0m")
-    println("\x1b[34m  ● Blue\x1b[0m\n")
+    println("\x1b[32m  System Monitor\x1b[0m\n")
+    print_line(cede bar(String::from("CPU"),  92))
+    print_line(cede bar(String::from("MEM"),  67))
+    print_line(cede bar(String::from("DISK"), 34))
+    print_line(cede bar(String::from("NET"),  15))
+    println("")
     
     println("\x1b[32m  Boxes\x1b[0m")
     print_line(cede info_box(String::from("Server started")))
     print_line(cede success_box(String::from("All passed")))
-    print_line(cede warn_box(String::from("Disk full")))
     print_line(cede error_box(String::from("Timeout"))); println("")
     
     println("\x1b[32m  Progress\x1b[0m")
     auto i# = 0
-    while i <= 100 { pflush(render(i)); sleep(30); i = i + 2 }
+    while i <= 100 { pflush(render(i)); sleep(25); i = i + 2 }
     println("")
     
     println("\x1b[32m  Spinner\x1b[0m")
     auto s# = 0
-    while s < 12 { pflush(spin(s)); sleep(80); s = s + 1 }
-    println("")
-    
-    println("\x1b[1;32m  ✦ Complete! ✦\x1b[0m")
+    while s < 8 { pflush(spin(s)); sleep(80); s = s + 1 }
+    println("\n\x1b[1;32m  ✦ Complete! ✦\x1b[0m")
     return 0
 }
