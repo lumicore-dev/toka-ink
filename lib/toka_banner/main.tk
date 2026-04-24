@@ -1,0 +1,52 @@
+import std/string::String
+
+pub fn header(text: String) -> String {
+    auto t# = String::from(text.c_str())
+    auto len# = t#.len() as i32
+    
+    auto r# = String::from("\x1b[1;36m")
+    auto i# = 0
+    while i < len + 12 {
+        r#.push_str("\xe2\x94\x81")
+        i = i + 1
+    }
+    r#.push_str("\x1b[0m\n")
+    
+    r#.push_str("\x1b[1;36m\xe2\x94\x83     ")
+    r#.push_str(t#.c_str())
+    r#.push_str("     \xe2\x94\x83\x1b[0m\n")
+    
+    r#.push_str("\x1b[1;36m")
+    i = 0
+    while i < len + 12 {
+        r#.push_str("\xe2\x94\x81")
+        i = i + 1
+    }
+    r#.push_str("\x1b[0m")
+    return cede r
+}
+
+pub fn divider(text: String) -> String {
+    auto t# = String::from(text.c_str())
+    auto len# = t#.len() as i32
+    auto total = 44
+    auto side# = (total - len) / 2 - 2
+    if side < 2 { side = 2 }
+    
+    auto r# = String::from("\x1b[90m")
+    auto i# = 0
+    while i < side {
+        r#.push_str("\xe2\x94\x80")
+        i = i + 1
+    }
+    r#.push_str(" \x1b[0m")
+    r#.push_str(t#.c_str())
+    r#.push_str("\x1b[90m ")
+    i = 0
+    while i < side {
+        r#.push_str("\xe2\x94\x80")
+        i = i + 1
+    }
+    r#.push_str("\x1b[0m")
+    return cede r
+}
