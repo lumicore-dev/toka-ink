@@ -1,20 +1,31 @@
-import std/io::{print_line}
+import std/io::{print, println, print_line}
 import std/string::String
 import lib/toka_colors::{red, green, yellow, blue, bold}
 import lib/toka_box/main::{info_box, success_box, warn_box, error_box}
+import lib/toka_progress/main::{render}
 
 pub fn main() -> i32 {
-    print_line(cede bold(String::from("  tokalibs v0.4.0")))
+    print_line(cede bold(String::from("  === tokalibs v0.5.0 ===")))
+    
     print_line(cede green(String::from("  --- Colors ---")))
-    print_line(cede red(String::from("  Error")))
-    print_line(cede green(String::from("  Success")))
-    print_line(cede yellow(String::from("  Warning")))
-    print_line(cede blue(String::from("  Info")))
+    print_line(cede red(String::from("  Red")))
+    print_line(cede green(String::from("  Green")))
+    print_line(cede yellow(String::from("  Yellow")))
+    print_line(cede blue(String::from("  Blue")))
     
     print_line(cede green(String::from("  --- Boxes ---")))
     print_line(cede info_box(String::from("Server started on port 8080")))
     print_line(cede success_box(String::from("All tests passed")))
     print_line(cede warn_box(String::from("Disk space: 2GB left")))
     print_line(cede error_box(String::from("Connection timeout")))
+    
+    print_line(cede green(String::from("  --- Progress ---")))
+    auto i# = 0
+    while i <= 100 {
+        print(cede render(i))
+        i = i + 10
+    }
+    print(String::from("\n"))
+    print_line(cede green(String::from("  Done!")))
     return 0
 }
