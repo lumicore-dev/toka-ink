@@ -1,48 +1,19 @@
-// toka_animate - Terminal text animations
-// Real-time animated effects using \r, cursor movement, and sleep.
-//
-// Modes:
-//   typewrite(text, speed_ms) - character-by-character reveal
-//   blink(text, times, speed_ms) - text flashing
-//   bounce(text, cycles, speed_ms) - spinner with bounce dots
-//   pulse_bar(duration_ms, steps) - animated progress bar
-
+// toka_animate v0.2.0 — 终端文字动画
+// v0.9.2 优化：String::fmt() + str.repeat() 替代手动循环和 from_int
 import std/io::stdout
 import std/string::String
 import std/task::sleep
 
 // ── Typewriter ──────────────────────────────────────────
-// Text types itself out character by character.
-// Speed: ms per character (lower = faster)
 pub fn typewrite(text: String, speed_ms: i32) {
     auto out = stdout()
     auto len = text.len() as i32
     auto i# = 0
     while i <= len {
-        // Build prefix up to i
-        auto chunk# = String::from("")
-        auto j# = 0
-        while j < i {
-            unsafe {
-                auto *buf = text.c_str() as *[char]
-                auto ch# = String::from("")
-                ch#.push_char(buf[j])
-                chunk#.push_str(ch#.c_str())
-            }
-            j = j + 1
-        }
-
+        auto chunk# = String::from(text.substring(0, i as u64))
         out.write("\r")
         out.write(chunk.c_str())
-        // Pad with spaces to clear previous longer content
-        auto pad# = len - i
-        if pad > 0 {
-            auto k# = 0
-            while k < pad {
-                out.write(" ")
-                k = k + 1
-            }
-        }
+        out.write(cede s" ".repeat(len - i).c_str())
         out.flush()
         sleep(speed_ms)
         i = i + 1
@@ -51,41 +22,29 @@ pub fn typewrite(text: String, speed_ms: i32) {
 }
 
 // ── Blink ───────────────────────────────────────────────
-// Text flashes on and off N times.
-// Uses \r to overwrite the same line.
 pub fn blink(text: String, times: i32, speed_ms: i32) {
     auto out = stdout()
     auto len = text.len() as i32
     auto i# = 0
     while i < times {
-        // Show
         out.write("\r\x1b[1;31m")
         out.write(text.c_str())
         out.write("\x1b[0m")
         out.flush()
         sleep(speed_ms)
-
-        // Hide
         out.write("\r")
-        auto j# = 0
-        while j < len {
-            out.write(" ")
-            j = j + 1
-        }
+        out.write(cede s" ".repeat(len).c_str())
         out.write("\r")
         out.flush()
         sleep(speed_ms / 2)
-
         i = i + 1
     }
-    // Final show
     out.write("\r\x1b[1;31m")
     out.write(text.c_str())
     out.write("\x1b[0m\n")
 }
 
 // ── Bounce ──────────────────────────────────────────────
-// Spinner with ASCII frames: -\|/ cycling around text.
 pub fn bounce(text: String, cycles: i32, speed_ms: i32) {
     auto out = stdout()
     auto frames# = String::from("-\\|/")
@@ -98,26 +57,21 @@ pub fn bounce(text: String, cycles: i32, speed_ms: i32) {
             auto *fbuf = frames.c_str() as *[char]
             ch#.push_char(fbuf[idx])
         }
-
         out.write("\r\x1b[36m")
         out.write(ch.c_str())
         out.write("\x1b[0m ")
         out.write(text.c_str())
-        out.write("  ")  // padding
+        out.write("  ")
         out.flush()
         sleep(speed_ms)
         i = i + 1
     }
-
-    // Clear and show checkmark
-    out.write("\r\x1b[32m\xe2\x9c\x93\x1b[0m ")  // ✓
+    out.write("\r\x1b[32m\xe2\x9c\x93\x1b[0m ")
     out.write(text.c_str())
     out.write("\n")
 }
 
 // ── Pulse Bar ───────────────────────────────────────────
-// Animated progress bar with pulsing fill head.
-// Shows a smooth fill animation from 0% to 100%.
 pub fn pulse_bar(duration_ms: i32, steps: i32) {
     auto out = stdout()
     auto delay# = duration_ms / steps
@@ -127,14 +81,11 @@ pub fn pulse_bar(duration_ms: i32, steps: i32) {
         auto filled = (i * 20) / steps
         auto remain = 20 - filled
 
-        // Left cap
         out.write("\r\x1b[34m[\x1b[0m")
 
-        // Filled portion
         auto j# = 0
         while j < filled {
             if j == filled - 1 && i < steps {
-                // Pulsing head: bright white
                 out.write("\x1b[1;37m#\x1b[0m")
             } else {
                 out.write("\x1b[34m#\x1b[0m")
@@ -142,25 +93,12 @@ pub fn pulse_bar(duration_ms: i32, steps: i32) {
             j = j + 1
         }
 
-        // Empty portion
-        j = 0
-        while j < remain {
-            out.write("\x1b[90m-\x1b[0m")
-            j = j + 1
-        }
+        out.write(cede s"\x1b[90m-\x1b[0m".repeat(remain).c_str())
+        out.write("\x1b[34m]\x1b[0m ")
 
-        // Right cap and percentage
-        out.write("\x1b[34m]\x1b[0m")
-        out.write(" ")
-        auto pct_str# = String::from_int(pct)
-        auto pct_len = pct_str.len() as i32
-        if pct_len < 3 {
-            auto z# = 0
-            while z < 3 - pct_len {
-                out.write(" ")
-                z = z + 1
-            }
-        }
+        auto pct_str = String::fmt("{}", pct)
+        if pct < 100 { out.write(" ") }
+        if pct < 10 { out.write(" ") }
         out.write(pct_str.c_str())
         out.write("%")
         out.flush()

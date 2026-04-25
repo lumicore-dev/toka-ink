@@ -1,29 +1,14 @@
-// toka_banner - Section header banners with ruled lines
-// One-line banners for visually separating output sections.
-// Usage:
-//   print_line(cede banner(String::from("Deployment")))
-//   print_line(cede success_banner(String::from("All systems go")))
-
+// toka-banner v0.2.0 — 标题横幅
+// v0.9.2 优化：String::fmt() + str.repeat() 替代 while 循环 + push_str 链
 import std/string::String
 
 fn ruled(*color: char, text: String) -> String {
     auto MIN_W = 56
-    auto t# = String::from(text.c_str())
-    auto tlen = t#.len() as i32
+    auto tlen = text.len() as i32
     auto pad# = MIN_W - tlen - 4
     if pad < 2 { pad = 2 }
-
-    auto r# = String::from(*color)
-    r#.push_str("\xe2\x94\x81\xe2\x94\x81\xe2\x94\x81 ")  // ━━━
-    r#.push_str(t#.c_str())
-    r#.push_str(" ")
-    auto i# = 0
-    while i < pad {
-        r#.push_str("\xe2\x94\x81")  // ━
-        i = i + 1
-    }
-    r#.push_str("\x1b[0m")
-    return cede r
+    return String::fmt("{}\xe2\x94\x81\xe2\x94\x81\xe2\x94\x81 {} {}\x1b[0m",
+        *color, text, cede s"\xe2\x94\x81".repeat(pad))
 }
 
 pub fn banner(text: String) -> String {

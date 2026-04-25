@@ -1,11 +1,13 @@
+// toka-spinner v0.2.0 — 旋转器
 import std/string::String
 
 pub fn spin(idx: i32) -> String {
+    auto n = idx % 4
     auto r# = String::from("\x0d\x1b[36m")
-    auto n# = idx
-    while n >= 4 { n = n - 4 }
-    if n == 0 { r#.push_str("-") } else if n == 1 { r#.push_str("\\") }
-    else if n == 2 { r#.push_str("|") } else { r#.push_str("/") }
+    if n == 0 { r#.push_str("-") }
+    else if n == 1 { r#.push_str("\\") }
+    else if n == 2 { r#.push_str("|") }
+    else { r#.push_str("/") }
     r#.push_str("\x1b[0m")
     return cede r
 }

@@ -1,17 +1,9 @@
-// toka_badge - Colored status badges
-// Lightweight label + message tags for CLI output.
-// Usage:
-//   print_line(cede info_badge(String::from("Server started")))
-//   print_line(cede error_badge(String::from("Connection refused")))
-
+// toka-badge v0.2.0 — 状态标签
+// v0.9.2 优化：String::fmt() 替代 push_str 链
 import std/string::String
 
 fn badge(*color: char, *tag: char, text: String) -> String {
-    auto r# = String::from(*color)
-    r#.push_str(*tag)
-    r#.push_str("\x1b[0m ")
-    r#.push_str(text.c_str())
-    return cede r
+    return String::fmt("{}{}\x1b[0m {}", *color, *tag, text)
 }
 
 pub fn info_badge(text: String) -> String {

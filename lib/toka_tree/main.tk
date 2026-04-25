@@ -1,11 +1,5 @@
-// toka_tree - Tree view renderer
-// Render hierarchical data with box-drawing tree connectors.
-// Input format: each line = one node, `>` prefix = depth level
-//
-// Usage:
-//   auto data = String::from("src/\n>main.tk\n>utils/\n>>helper.tk\n>>config.tk\n>lib/\n>>core.tk")
-//   print_line(cede render_tree(data))
-
+// toka-tree v0.2.0 — 树形视图渲染器
+// v0.9.2 优化：str.repeat() 替代 repeat_str() 辅助函数
 import std/string::String
 
 fn count_lines(s: String) -> i32 {
@@ -71,22 +65,11 @@ fn char_at(s: String, idx: i32) -> i32 {
     }
 }
 
-fn repeat_str(*s: char, n: i32) -> String {
-    auto r# = String::from("")
-    auto i# = 0
-    while i < n {
-        r#.push_str(*s)
-        i = i + 1
-    }
-    return cede r
-}
-
 pub fn render_tree(data: String) -> String {
     if data.len() == 0 { return String::from("") }
 
     auto result# = String::from("")
     auto total = count_lines(data)
-    // flags[i] = '1' if depth i still has unrendered siblings after current node
     auto flags# = String::from("")
 
     auto i# = 0
@@ -97,7 +80,7 @@ pub fn render_tree(data: String) -> String {
         auto depth = node_depth(line)
         auto name = node_name(line)
 
-        // Look ahead: is this the last sibling at this depth?
+        // 判断是否是同级最后一个
         auto is_last# = 1
         auto j# = i + 1
         while j < total {
@@ -109,7 +92,7 @@ pub fn render_tree(data: String) -> String {
             j = j + 1
         }
 
-        // Trim flags to keep only levels < depth (deeper levels are stale)
+        // 刷新 flags（只保留 depth 级之前的）
         auto new_flags# = String::from("")
         auto k# = 0
         while k < depth && k < flags.len() as i32 {
@@ -120,37 +103,29 @@ pub fn render_tree(data: String) -> String {
         }
         flags = cede new_flags
 
-        // Add current level's flag
+        // 当前级 flag
         if is_last == 1 { flags#.push_str("0") }
         else { flags#.push_str("1") }
 
-        // Build indentation prefix from ancestor flags
-        auto prefix# = String::from("")
+        // 前缀缩进
         k = 0
         while k < depth {
             if k < flags.len() as i32 {
                 auto ch = char_at(flags, k)
-                if ch == 49 { prefix#.push_str("\xe2\x94\x82   ") }  // │
-                else { prefix#.push_str("    ") }
-            } else {
-                prefix#.push_str("    ")
-            }
+                if ch == 49 { result#.push_str("\xe2\x94\x82   ") }
+                else { result#.push_str("    ") }
+            } else { result#.push_str("    ") }
             k = k + 1
         }
 
-        // Add node connector
+        // 连接符
         if depth > 0 {
-            if is_last == 1 {
-                prefix#.push_str("\xe2\x94\x94\xe2\x94\x80\xe2\x94\x80 ")  // └──
-            } else {
-                prefix#.push_str("\xe2\x94\x9c\xe2\x94\x80\xe2\x94\x80 ")  // ├──
-            }
+            if is_last == 1 { result#.push_str("\xe2\x94\x94\xe2\x94\x80\xe2\x94\x80 ") }
+            else { result#.push_str("\xe2\x94\x9c\xe2\x94\x80\xe2\x94\x80 ") }
         }
 
-        result#.push_str(prefix.c_str())
         result#.push_str(name.c_str())
         result#.push_str("\n")
-
         i = i + 1
     }
 

@@ -1,11 +1,5 @@
-// toka_layout - Multi-column layout renderer
-// Arrange a list of items into evenly-spaced columns.
-// Useful for listing files, services, tags in compact format.
-//
-// Usage:
-//   auto items = String::from("api-01\ndb-02\ncache-03\nworker-04\nweb-05\nqueue-06")
-//   print_line(cede columns(items, 3))
-
+// toka-layout v0.2.0 — 多列布局渲染器
+// v0.9.2 优化：str.repeat() 替代手动 padding 循环
 import std/string::String
 
 fn count_lines(s: String) -> i32 {
@@ -47,14 +41,9 @@ fn max_width(s: String) -> i32 {
 }
 
 fn pad_right(s: String, width: i32) -> String {
-    auto r# = String::from(s.c_str())
-    auto slen = s.len() as i32
-    auto i# = 0
-    while i < width - slen {
-        r#.push_str(" ")
-        i = i + 1
-    }
-    return cede r
+    auto pad = width - s.len() as i32
+    if pad <= 0 { return String::from(s.c_str()) }
+    return String::fmt("{}{}", s, cede s" ".repeat(pad))
 }
 
 pub fn columns(items: String, num_cols: i32) -> String {
@@ -62,11 +51,9 @@ pub fn columns(items: String, num_cols: i32) -> String {
     if total == 0 { return String::from("") }
     if num_cols <= 1 { return String::from(items.c_str()) }
 
-    // Items per column (rounded up)
     auto per_col# = total / num_cols
     if total % num_cols != 0 { per_col = per_col + 1 }
 
-    // Calculate max width for each column
     auto result# = String::from("")
     auto row# = 0
     while row < per_col {
@@ -76,7 +63,6 @@ pub fn columns(items: String, num_cols: i32) -> String {
             if idx < total {
                 auto item = line_at(items, idx)
                 if col > 0 { result#.push_str("  ") }
-                // Calculate this column's max width for padding
                 auto col_max# = 0
                 auto ci# = 0
                 while ci < per_col {
@@ -91,7 +77,6 @@ pub fn columns(items: String, num_cols: i32) -> String {
             }
             col = col + 1
         }
-        // Trim trailing whitespace from this row
         result#.push_str("\n")
         row = row + 1
     }

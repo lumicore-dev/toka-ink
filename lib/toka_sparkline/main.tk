@@ -1,9 +1,9 @@
+// toka-sparkline v0.2.0 — 迷你折线图
 import std/string::String
 
 fn push_bar(r#: String, val: i32, max: i32) -> void {
     auto lv# = 0
     if max > 0 { lv = val * 7 / max }
-    else { lv = 0 }
     if lv >= 7 { r#.push_str("\xe2\x96\x88") }
     else if lv >= 6 { r#.push_str("\xe2\x96\x87") }
     else if lv >= 5 { r#.push_str("\xe2\x96\x86") }
