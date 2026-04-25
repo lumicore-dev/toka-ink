@@ -1,20 +1,20 @@
 import std/io::{println, print_line}
 import std/string::String
 import std/task::{sleep}
-import lib/toka_chart/main::{bar}
-import lib/toka_sparkline/main::{sparkline}
-import lib/toka_box/main::{info_box, success_box, error_box}
-import lib/toka_progress/main::{render}
-import lib/toka_spinner/main::{spin}
-import lib/toka_table/main::{render_table}
-import lib/toka_badge/main::{info_badge, success_badge, warn_badge, error_badge}
-import lib/toka_banner/main::{banner, success_banner, warn_banner, error_banner}
-import lib/toka_tree/main::{render_tree}
-import lib/toka_layout/main::{columns}
+import lib/ink/chart::{bar}
+import lib/ink/sparkline::{sparkline}
+import lib/ink/box::{info_box, success_box, error_box}
+import lib/ink/progress::{render}
+import lib/ink/spinner::{spin}
+import lib/ink/table::{render_table}
+import lib/ink/badge::{info_badge, success_badge, warn_badge, error_badge}
+import lib/ink/banner::{banner, success_banner, warn_banner, error_banner}
+import lib/ink/tree::{render_tree}
+import lib/ink/layout::{columns}
 
 pub fn main() -> i32 {
     println("\x1b[1;36m╔══════════════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v2.0.0\x1b[0m             \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v2.1.0\x1b[0m             \x1b[1;36m║\x1b[0m")
     println("\x1b[1;36m╚══════════════════════════════╝\x1b[0m\n")
     
     println("\x1b[32m  Badges\x1b[0m")
@@ -32,7 +32,7 @@ pub fn main() -> i32 {
     println("")
 
     println("\x1b[32m  Tree\x1b[0m")
-    auto tree = String::from("toka-ink/\n>src/\n>>main.tk\n>lib/\n>>toka_chart/\n>>>main.tk\n>>toka_sparkline/\n>>>main.tk\n>>toka_box/\n>>>main.tk\n>>toka_table/\n>>>main.tk\n>>toka_badge/\n>>>main.tk\n>>toka_banner/\n>>>main.tk\n>>toka_tree/\n>>>main.tk\n>Project.tk")
+    auto tree = String::from("toka-ink/\n>src/\n>>main.tk\n>lib/\n>>ink/\n>>>animate.tk\n>>>badge.tk\n>>>banner.tk\n>>>box.tk\n>>>chart.tk\n>>>colors.tk\n>>>layout.tk\n>>>progress.tk\n>>>prompt.tk\n>>>sparkline.tk\n>>>spinner.tk\n>>>table.tk\n>>>tree.tk\n>Project.tk")
     print_line(cede render_tree(tree))
     println("")
     
