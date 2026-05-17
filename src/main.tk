@@ -65,19 +65,14 @@ pub fn main() -> i32 {
     println("\x1b[32m  Progress\x1b[0m")
     auto i# = 0
     while i <= 100 {
-        auto out = stdout()
-        out.write(cede render(i))
-        out.flush()
+        print_line(cede render(i))
         sleep(20); i = i + 2
     }
-    println("")
     
     println("\x1b[32m  Spinner\x1b[0m")
     auto s# = 0
     while s < 20 {
-        auto out = stdout()
-        out.write(cede spin(s))
-        out.flush()
+        print_line(cede spin(s))
         sleep(120); s = s + 1
     }
     println("")
