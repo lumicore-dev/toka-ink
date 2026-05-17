@@ -53,7 +53,7 @@ fn node_name(line: String) -> String {
             else { break }
         }
         if start >= len { return String::from("") }
-        return cede line.substring(start as u64, len as u64)
+        return cede line.substring(start, len)
     }
 }
 
