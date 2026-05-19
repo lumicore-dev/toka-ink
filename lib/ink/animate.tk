@@ -10,7 +10,7 @@ pub fn typewrite(text: String, speed_ms: i32) {
     auto len = text.len() as i32
     auto i# = 0
     while i <= len {
-        auto chunk# = String::from(text.substring(0, i as u64))
+        auto chunk# = String::from(text.substring(0, i))
         out.write("\r")
         out.write(chunk.c_str())
         out.write(cede s" ".repeat(len - i).c_str())
