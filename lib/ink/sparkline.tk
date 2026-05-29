@@ -1,7 +1,6 @@
 // toka-sparkline v0.2.0 — 迷你折线图
-import std/string::String
 
-fn push_bar(r#: String, val: i32, max: i32) -> void {
+fn push_bar(r#: string, val: i32, max: i32) -> void {
     auto lv# = 0
     if max > 0 { lv = val * 7 / max }
     if lv >= 7 { r#.push_str("\xe2\x96\x88") }
@@ -14,7 +13,7 @@ fn push_bar(r#: String, val: i32, max: i32) -> void {
     else { r#.push_str("\xe2\x96\x81") }
 }
 
-pub fn sparkline(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) -> String {
+pub fn sparkline(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) -> string {
     auto mx# = a
     if b > mx { mx = b }
     if c > mx { mx = c }
@@ -24,7 +23,7 @@ pub fn sparkline(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32)
     if g > mx { mx = g }
     if h > mx { mx = h }
     
-    auto r# = String::from("\x1b[36m")
+    auto r# = string::from("\x1b[36m")
     push_bar(r, a, mx)
     push_bar(r, b, mx)
     push_bar(r, c, mx)

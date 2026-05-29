@@ -1,28 +1,27 @@
 // toka-banner v0.2.0 — 标题横幅
-// v0.9.2 优化：String::fmt() + str.repeat() 替代 while 循环 + push_str 链
-import std/string::String
+// v0.9.2 优化：string::fmt() + str.repeat() 替代 loop 循环 + push_str 链
 
-fn ruled(*color: char, text: String) -> String {
+fn ruled(color: str, text: string) -> string {
     auto MIN_W = 56
     auto tlen = text.len() as i32
     auto pad# = MIN_W - tlen - 4
     if pad < 2 { pad = 2 }
-    return String::fmt("{}\xe2\x94\x81\xe2\x94\x81\xe2\x94\x81 {} {}\x1b[0m",
-        *color, text, cede s"\xe2\x94\x81".repeat(pad))
+    return string::fmt("{}\xe2\x94\x81\xe2\x94\x81\xe2\x94\x81 {} {}\x1b[0m",
+        color, text, cede "\xe2\x94\x81".repeat(pad))
 }
 
-pub fn banner(text: String) -> String {
+pub fn banner(text: string) -> string {
     return cede ruled("\x1b[1;34m", text)
 }
 
-pub fn success_banner(text: String) -> String {
+pub fn success_banner(text: string) -> string {
     return cede ruled("\x1b[1;32m", text)
 }
 
-pub fn warn_banner(text: String) -> String {
+pub fn warn_banner(text: string) -> string {
     return cede ruled("\x1b[1;33m", text)
 }
 
-pub fn error_banner(text: String) -> String {
+pub fn error_banner(text: string) -> string {
     return cede ruled("\x1b[1;31m", text)
 }

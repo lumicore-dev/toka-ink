@@ -1,9 +1,8 @@
 // toka-spinner v0.2.0 — 旋转器
-import std/string::String
 
-pub fn spin(idx: i32) -> String {
+pub fn spin(idx: i32) -> string {
     auto n = idx % 4
-    auto r# = String::from("\x0d\x1b[36m")
+    auto r# = string::from("\x0d\x1b[36m")
     if n == 0 { r#.push_str("-") }
     else if n == 1 { r#.push_str("\\") }
     else if n == 2 { r#.push_str("|") }

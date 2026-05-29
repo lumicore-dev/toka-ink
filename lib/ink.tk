@@ -1,4 +1,4 @@
-// toka-ink v2.1.0 — Facade 统一入口
+// toka-ink v2.1.1 — Facade 统一入口
 // 一键导入所有 UI 组件
 // 用法: import lib/ink::{bar, sparkline, info_box, render_table}
 

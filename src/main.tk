@@ -1,5 +1,4 @@
 import std/io::{println, print_line}
-import std/string::String
 import std/task::{sleep}
 import lib/ink/chart::{bar}
 import lib/ink/sparkline::{sparkline}
@@ -14,64 +13,64 @@ import lib/ink/layout::{columns}
 
 pub fn main() -> i32 {
     println("\x1b[1;36m╔══════════════════════════════╗\x1b[0m")
-    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v2.1.0\x1b[0m             \x1b[1;36m║\x1b[0m")
+    println("\x1b[1;36m║\x1b[0m  \x1b[1mtoka-ink v2.1.1\x1b[0m             \x1b[1;36m║\x1b[0m")
     println("\x1b[1;36m╚══════════════════════════════╝\x1b[0m\n")
     
     println("\x1b[32m  Badges\x1b[0m")
-    print_line(cede info_badge(String::from("Server listening on :8080")))
-    print_line(cede success_badge(String::from("Database migrated")))
-    print_line(cede warn_badge(String::from("Disk usage at 85%")))
-    print_line(cede error_badge(String::from("Connection timeout")))
+    print_line(cede info_badge(string::from("Server listening on :8080")))
+    print_line(cede success_badge(string::from("Database migrated")))
+    print_line(cede warn_badge(string::from("Disk usage at 85%")))
+    print_line(cede error_badge(string::from("Connection timeout")))
     println("")
     
     println("\x1b[32m  Banners\x1b[0m")
-    print_line(cede banner(String::from("Deployment")))
-    print_line(cede success_banner(String::from("All systems operational")))
-    print_line(cede warn_banner(String::from("Certificate expiring")))
-    print_line(cede error_banner(String::from("Service unavailable")))
+    print_line(cede banner(string::from("Deployment")))
+    print_line(cede success_banner(string::from("All systems operational")))
+    print_line(cede warn_banner(string::from("Certificate expiring")))
+    print_line(cede error_banner(string::from("Service unavailable")))
     println("")
 
     println("\x1b[32m  Tree\x1b[0m")
-    auto tree = String::from("toka-ink/\n>src/\n>>main.tk\n>lib/\n>>ink/\n>>>animate.tk\n>>>badge.tk\n>>>banner.tk\n>>>box.tk\n>>>chart.tk\n>>>colors.tk\n>>>layout.tk\n>>>progress.tk\n>>>prompt.tk\n>>>sparkline.tk\n>>>spinner.tk\n>>>table.tk\n>>>tree.tk\n>Project.tk")
+    auto tree = string::from("toka-ink/\n>src/\n>>main.tk\n>lib/\n>>ink/\n>>>animate.tk\n>>>badge.tk\n>>>banner.tk\n>>>box.tk\n>>>chart.tk\n>>>colors.tk\n>>>layout.tk\n>>>progress.tk\n>>>prompt.tk\n>>>sparkline.tk\n>>>spinner.tk\n>>>table.tk\n>>>tree.tk\n>build.tk")
     print_line(cede render_tree(tree))
     println("")
     
     println("\x1b[32m  Columns\x1b[0m")
-    auto services = String::from("api-01\ndb-02\ncache-03\nworker-04\nweb-05\nqueue-06\nmonitor-07")
+    auto services = string::from("api-01\ndb-02\ncache-03\nworker-04\nweb-05\nqueue-06\nmonitor-07")
     print_line(cede columns(services, 3))
     println("")
     
     println("\x1b[32m  System Monitor\x1b[0m\n")
-    print_line(cede bar(String::from("CPU"),  92))
+    print_line(cede bar(string::from("CPU"),  92))
     print_line(cede sparkline(10, 25, 60, 85, 95, 70, 40, 15))
-    print_line(cede bar(String::from("MEM"),  67))
+    print_line(cede bar(string::from("MEM"),  67))
     print_line(cede sparkline(80, 90, 75, 60, 45, 30, 20, 10))
-    print_line(cede bar(String::from("DISK"), 34))
+    print_line(cede bar(string::from("DISK"), 34))
     print_line(cede sparkline(10, 12, 15, 20, 25, 28, 30, 34))
     println("")
     
     println("\x1b[32m  Boxes\x1b[0m")
-    print_line(cede info_box(String::from("Server: OK")))
-    print_line(cede success_box(String::from("DB: Connected")))
-    print_line(cede error_box(String::from("Disk: 2GB")))
+    print_line(cede info_box(string::from("Server: OK")))
+    print_line(cede success_box(string::from("DB: Connected")))
+    print_line(cede error_box(string::from("Disk: 2GB")))
     println("")
     
     println("\x1b[32m  Table\x1b[0m")
-    auto headers = String::from("Name|Status|Uptime|Region")
-    auto rows = String::from("api-01|Online|14d 3h|us-east\ndb-02|Online|87d 12h|eu-west\ncache-03|Degraded|2d 7h|ap-south\nworker-04|Offline|0d 0h|us-west")
+    auto headers = string::from("Name|Status|Uptime|Region")
+    auto rows = string::from("api-01|Online|14d 3h|us-east\ndb-02|Online|87d 12h|eu-west\ncache-03|Degraded|2d 7h|ap-south\nworker-04|Offline|0d 0h|us-west")
     print_line(cede render_table(headers, rows))
     println("")
     
     println("\x1b[32m  Progress\x1b[0m")
     auto i# = 0
-    while i <= 100 {
+    loop i <= 100 {
         print_line(cede render(i))
         sleep(20); i = i + 2
     }
     
     println("\x1b[32m  Spinner\x1b[0m")
     auto s# = 0
-    while s < 20 {
+    loop s < 20 {
         print_line(cede spin(s))
         sleep(120); s = s + 1
     }

@@ -1,9 +1,8 @@
-import std/string::String
-pub fn red()     -> String { return String::from(s"\x1b[31m") }
-pub fn green()   -> String { return String::from(s"\x1b[32m") }
-pub fn yellow()  -> String { return String::from(s"\x1b[33m") }
-pub fn blue()    -> String { return String::from(s"\x1b[34m") }
-pub fn cyan()    -> String { return String::from(s"\x1b[36m") }
-pub fn bold()    -> String { return String::from(s"\x1b[1m") }
-pub fn dim()     -> String { return String::from(s"\x1b[2m") }
-pub fn reset()   -> String { return String::from(s"\x1b[0m") }
+pub fn red()     -> string { return string::from("\x1b[31m") }
+pub fn green()   -> string { return string::from("\x1b[32m") }
+pub fn yellow()  -> string { return string::from("\x1b[33m") }
+pub fn blue()    -> string { return string::from("\x1b[34m") }
+pub fn cyan()    -> string { return string::from("\x1b[36m") }
+pub fn bold()    -> string { return string::from("\x1b[1m") }
+pub fn dim()     -> string { return string::from("\x1b[2m") }
+pub fn reset()   -> string { return string::from("\x1b[0m") }

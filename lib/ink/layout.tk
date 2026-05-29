@@ -1,15 +1,14 @@
 // toka-layout v0.2.0 — 多列布局渲染器
 // v0.9.2 优化：str.repeat() 替代手动 padding 循环
-import std/string::String
 
-fn count_lines(s: String) -> i32 {
+fn count_lines(s: string) -> i32 {
     if s.len() == 0 { return 0 }
     auto cnt# = 1
     unsafe {
         auto *buf = s.c_str() as *[char]
         auto len = s.len() as i32
         auto i# = 0
-        while i < len {
+        loop i < len {
             if buf[i] == 10 as char { cnt = cnt + 1 }
             i = i + 1
         }
@@ -17,22 +16,22 @@ fn count_lines(s: String) -> i32 {
     return cnt
 }
 
-fn line_at(s: String, idx: i32) -> String {
+fn line_at(s: string, idx: i32) -> string {
     auto iter# = s.split(10)
     auto i# = 0
-    while !iter.is_done() {
+    loop !iter.is_done() {
         auto val = iter#.next()
         if i == idx { return val }
         i = i + 1
     }
-    return String::from("")
+    return string::from("")
 }
 
-fn max_width(s: String) -> i32 {
+fn max_width(s: string) -> i32 {
     auto total = count_lines(s)
     auto mw# = 0
     auto i# = 0
-    while i < total {
+    loop i < total {
         auto line = line_at(s, i)
         if line.len() as i32 > mw { mw = line.len() as i32 }
         i = i + 1
@@ -40,32 +39,32 @@ fn max_width(s: String) -> i32 {
     return mw
 }
 
-fn pad_right(s: String, width: i32) -> String {
+fn pad_right(s: string, width: i32) -> string {
     auto pad = width - s.len() as i32
-    if pad <= 0 { return String::from(s.c_str()) }
-    return String::fmt("{}{}", s, cede s" ".repeat(pad))
+    if pad <= 0 { return s.clone() }
+    return string::fmt("{}{}", s, cede " ".repeat(pad))
 }
 
-pub fn columns(items: String, num_cols: i32) -> String {
+pub fn columns(items: string, num_cols: i32) -> string {
     auto total = count_lines(items)
-    if total == 0 { return String::from("") }
-    if num_cols <= 1 { return String::from(items.c_str()) }
+    if total == 0 { return string::from("") }
+    if num_cols <= 1 { return items.clone() }
 
     auto per_col# = total / num_cols
     if total % num_cols != 0 { per_col = per_col + 1 }
 
-    auto result# = String::from("")
+    auto result# = string::from("")
     auto row# = 0
-    while row < per_col {
+    loop row < per_col {
         auto col# = 0
-        while col < num_cols {
+        loop col < num_cols {
             auto idx = row + col * per_col
             if idx < total {
                 auto item = line_at(items, idx)
                 if col > 0 { result#.push_str("  ") }
                 auto col_max# = 0
                 auto ci# = 0
-                while ci < per_col {
+                loop ci < per_col {
                     auto ci_idx = ci + col * per_col
                     if ci_idx < total {
                         auto ci_item = line_at(items, ci_idx)
@@ -73,7 +72,7 @@ pub fn columns(items: String, num_cols: i32) -> String {
                     }
                     ci = ci + 1
                 }
-                result#.push_str(cede pad_right(item, col_max).c_str())
+                result#.push_str(cede pad_right(item, col_max).as_str())
             }
             col = col + 1
         }

@@ -1,16 +1,14 @@
 // toka-table v0.2.0 — 终端表格渲染器
-// v0.9.2 优化：str.repeat() + String::fmt() 替代 while 循环 + push_str 链
-import std/string::String
-import core/libc::*
+// v0.9.2 优化：str.repeat() + string::fmt() 替代 loop 循环 + push_str 链
 
-fn count_cols(s: String, sep: i32) -> i32 {
+fn count_cols(s: string, sep: i32) -> i32 {
     if s.len() == 0 { return 0 }
     auto cnt# = 1
     unsafe {
         auto *buf = s.c_str() as *[char]
         auto slen = s.len() as i32
         auto i# = 0
-        while i < slen {
+        loop i < slen {
             if buf[i] as i32 == sep { cnt = cnt + 1 }
             i = i + 1
         }
@@ -18,21 +16,21 @@ fn count_cols(s: String, sep: i32) -> i32 {
     return cnt
 }
 
-fn nth_col(s: String, sep: i32, n: i32) -> String {
+fn nth_col(s: string, sep: i32, n: i32) -> string {
     auto iter# = s.split(sep)
     auto i# = 0
-    while !iter.is_done() {
+    loop !iter.is_done() {
         auto val = iter#.next().trim()
         if i == n { return val }
         i = i + 1
     }
-    return String::from("")
+    return string::from("")
 }
 
-fn col_max_width(rows_block: String, col_idx: i32) -> i32 {
+fn col_max_width(rows_block: string, col_idx: i32) -> i32 {
     auto max_w# = 0
     auto r_iter# = rows_block.split(10)
-    while !r_iter.is_done() {
+    loop !r_iter.is_done() {
         auto row = r_iter#.next()
         if row.len() > 0 {
             auto cell = nth_col(row, 124, col_idx)
@@ -43,13 +41,13 @@ fn col_max_width(rows_block: String, col_idx: i32) -> i32 {
     return max_w
 }
 
-fn parse_int(s: String) -> i32 {
+fn parse_int(s: string) -> i32 {
     if s.len() == 0 { return 0 }
     unsafe {
         auto *buf = s.c_str() as *[char]
         auto val# = 0
         auto i# = 0
-        while i < s.len() as i32 {
+        loop i < s.len() as i32 {
             val = val * 10 + (buf[i] as i32 - 48)
             i = i + 1
         }
@@ -57,76 +55,76 @@ fn parse_int(s: String) -> i32 {
     }
 }
 
-fn get_width(widths_buf: String, idx: i32) -> i32 {
+fn get_width(widths_buf: string, idx: i32) -> i32 {
     return parse_int(nth_col(widths_buf, 44, idx))
 }
 
-fn render_border(*left: char, *mid: char, *right: char, widths_buf: String, col_count: i32) -> String {
-    auto r# = String::from("\x1b[1;34m")
-    r#.push_str(*left)
+fn render_border(left: str, mid: str, right: str, widths_buf: string, col_count: i32) -> string {
+    auto r# = string::from("\x1b[1;34m")
+    r#.push_str(left)
     auto ci# = 0
-    while ci < col_count {
-        r#.push_str(cede s"\xe2\x95\x90".repeat(get_width(widths_buf, ci) + 2).c_str())
+    loop ci < col_count {
+        r#.push_str(cede "\xe2\x95\x90".repeat(get_width(widths_buf, ci) + 2).as_str())
         ci = ci + 1
-        if ci < col_count { r#.push_str(*mid) }
+        if ci < col_count { r#.push_str(mid) }
     }
-    r#.push_str(*right)
+    r#.push_str(right)
     r#.push_str("\x1b[0m\n")
     return cede r
 }
 
-pub fn render_table(headers_line: String, rows_block: String) -> String {
+pub fn render_table(headers_line: string, rows_block: string) -> string {
     auto col_count = count_cols(headers_line, 124)
-    if col_count == 0 { return String::from("") }
+    if col_count == 0 { return string::from("") }
 
     // 计算列宽
-    auto widths_buf# = String::from("")
+    auto widths_buf# = string::from("")
     auto ci# = 0
-    while ci < col_count {
+    loop ci < col_count {
         auto hname = nth_col(headers_line, 124, ci)
         auto w# = hname.len() as i32
         auto rw = col_max_width(rows_block, ci)
         if rw > w { w = rw }
         if ci > 0 { widths_buf#.push_str(",") }
-        widths_buf#.push_str(cede String::fmt("{}", w).c_str())
+        widths_buf#.push_str(cede string::fmt("{}", w).as_str())
         ci = ci + 1
     }
 
-    auto result# = String::from("")
+    auto result# = string::from("")
 
     // 上边框
-    result#.push_str(cede render_border("\xe2\x95\x94", "\xe2\x95\xa6", "\xe2\x95\x97", widths_buf, col_count).c_str())
+    result#.push_str(cede render_border("\xe2\x95\x94", "\xe2\x95\xa6", "\xe2\x95\x97", widths_buf, col_count).as_str())
 
     // 表头
     result#.push_str("\x1b[1;34m\xe2\x95\x91\x1b[0m")
     ci = 0
-    while ci < col_count {
+    loop ci < col_count {
         auto name = nth_col(headers_line, 124, ci)
         auto pad = get_width(widths_buf, ci) - name.len() as i32
         result#.push_str(" ")
-        result#.push_str(name.c_str())
-        result#.push_str(cede s" ".repeat(pad + 1).c_str())
+        result#.push_str(name.as_str())
+        result#.push_str(cede " ".repeat(pad + 1).as_str())
         result#.push_str("\x1b[1;34m\xe2\x95\x91\x1b[0m")
         ci = ci + 1
     }
     result#.push_str("\n")
 
     // 分隔线
-    result#.push_str(cede render_border("\xe2\x95\xa0", "\xe2\x95\xac", "\xe2\x95\xa3", widths_buf, col_count).c_str())
+    result#.push_str(cede render_border("\xe2\x95\xa0", "\xe2\x95\xac", "\xe2\x95\xa3", widths_buf, col_count).as_str())
 
     // 数据行
     auto r_iter# = rows_block.split(10)
-    while !r_iter.is_done() {
+    loop !r_iter.is_done() {
         auto row = r_iter#.next()
         if row.len() > 0 {
             result#.push_str("\x1b[1;34m\xe2\x95\x91\x1b[0m")
             auto ci2# = 0
-            while ci2 < col_count {
+            loop ci2 < col_count {
                 auto cell = nth_col(row, 124, ci2)
                 auto pad = get_width(widths_buf, ci2) - cell.len() as i32
                 result#.push_str(" ")
-                result#.push_str(cell.c_str())
-                result#.push_str(cede s" ".repeat(pad + 1).c_str())
+                result#.push_str(cell.as_str())
+                result#.push_str(cede " ".repeat(pad + 1).as_str())
                 result#.push_str("\x1b[1;34m\xe2\x95\x91\x1b[0m")
                 ci2 = ci2 + 1
             }
@@ -135,7 +133,7 @@ pub fn render_table(headers_line: String, rows_block: String) -> String {
     }
 
     // 下边框
-    result#.push_str(cede render_border("\xe2\x95\x9a", "\xe2\x95\xa9", "\xe2\x95\x9d", widths_buf, col_count).c_str())
+    result#.push_str(cede render_border("\xe2\x95\x9a", "\xe2\x95\xa9", "\xe2\x95\x9d", widths_buf, col_count).as_str())
 
     return cede result
 }
